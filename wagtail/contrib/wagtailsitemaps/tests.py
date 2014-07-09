@@ -44,21 +44,21 @@ class TestSitemapGenerator(TestCase):
         sitemap = Sitemap(self.site)
         urls = [url['location'] for url in sitemap.get_urls()]
 
-        self.assertIn('/', urls) # Homepage
-        self.assertIn('/hello-world/', urls) # Child page
+        self.assertIn(self.home_page.full_url, urls) # Homepage
+        self.assertIn(self.child_page.full_url, urls) # Child page
 
     def test_render(self):
         sitemap = Sitemap(self.site)
         xml = sitemap.render()
 
         # Check that a URL has made it into the xml
-        self.assertIn('/hello-world/', xml)
+        self.assertIn(self.child_page.full_url, xml)
 
         # Make sure the unpublished page didn't make it into the xml
-        self.assertNotIn('/unpublished/', xml)
+        self.assertNotIn(self.unpublished_child_page.full_url, xml)
 
         # Make sure the protected page didn't make it into the xml
-        self.assertNotIn('/protected/', xml)
+        self.assertNotIn(self.protected_child_page.full_url, xml)
 
 
 class TestSitemapView(TestCase):
